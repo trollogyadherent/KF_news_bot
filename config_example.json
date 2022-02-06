@@ -1,0 +1,11 @@
+{
+    "prefix": ".",
+    "allowed_channel_ids_for_commands": [],
+    "news_command_usage_powelevel": 0,
+    "refusal_message": "You don't have the permission to do that. cope",
+    "auto_send_news": "false",
+    "auto_send_news_channels": [],
+    "seconds_between_check_news": 600,
+    "add_feature_links": "false",
+    "add_kf_homepage_link": "true"
+}

@@ -1,0 +1,6 @@
+..gitignore.un~
+.env
+__pycache__
+__pycache__/**
+__pycache__/*
+config.json
