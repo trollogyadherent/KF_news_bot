@@ -4,7 +4,6 @@ import os
 import dotenv
 from nio import AsyncClient, MatrixRoom, RoomMessageText
 
-import classes as cl
 import functions as fn
 
 
@@ -18,8 +17,6 @@ config = fn.read_conf(conf_filename)
 loop = asyncio.get_event_loop()
 
 client = AsyncClient(os.getenv('MATRIX_HOST'), os.getenv('MATRIX_USERNAME'))
-
-p_handle_news = cl.Periodic(fn.handle_news(client), config.seconds_between_check_news)
 
 async def main(client) -> None:
 	#client = AsyncClient(os.getenv('MATRIX_HOST'), os.getenv('MATRIX_USERNAME'))
@@ -41,7 +38,6 @@ async def main(client) -> None:
 
 	client.add_event_callback(message_callback, RoomMessageText)
 	await client.sync_forever(timeout=30000)
-	#await p_handle_news.start()
 
 async def periodic():
     while True:
