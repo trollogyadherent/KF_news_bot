@@ -5,3 +5,4 @@ __pycache__/**
 __pycache__/*
 config.json
 news_cache.json
+launch_bot.sh

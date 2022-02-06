@@ -34,7 +34,7 @@ async def main(client) -> None:
 				await fn.send(room.room_id, news[0], client, True, news[1])
 				#await client.room_send(room.room_id, message_type='m.room.message', content={'msgtype': 'm.text', 'format': 'org.matrix.custom.html', 'formatted_body':news[1], 'body': news[0]})
 		if event.body.startswith(config.prefix + 'source'):
-			await fn.send(room.room_id, 'sneed', client)
+			await fn.send(room.room_id, 'https://github.com/trollogyadherent/KF_news_bot', client)
 
 	client.add_event_callback(message_callback, RoomMessageText)
 	await client.sync_forever(timeout=30000)
