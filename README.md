@@ -6,3 +6,5 @@ Requires `matrix-nio`, `requests`, `python-dotenv`, `bs4`.
 Usage: `python bot.py`.
 
 If I'm not lazy I might add a check for MATI streams.
+
+![image](https://user-images.githubusercontent.com/19153947/152706608-d18dac54-0017-49aa-9e69-ffdbb44cd6c9.png)
