@@ -124,9 +124,9 @@ def get_news(get_list=False):
 	return news
 
 
-def cache_news(news):
+def cache_news(news, urls):
 	with open('news_cache.json', 'w+') as nc:
-		write_JSON({"news": news}, nc)
+		write_JSON({"news": news, "urls": urls}, nc)
 
 def read_news_cache():
 	if not os.path.isfile('news_cache.json'):
@@ -142,20 +142,20 @@ async def handle_news(client):
 	news = get_news(True)
 	news_cache = read_news_cache()
 
-	if not news_cache:
-		cache_news(news[0])
+	if not news_cache or not 'urls' in news_cache:
+		cache_news(news[0], news[1])
 		return
-		#continue
 
 	new_news = []
 	new_news_html = []
 	for i in range(len(news[0])):
 		n = news[0][i]
-		if not n in news_cache['news']:
+		link = news[1][i]
+		if not link in news_cache['urls']:
 			nl = '\n'
 			new_news.append(f"• + {n.replace(nl, '')}")
 			if config.add_feature_links == 'true':
-				new_news_html.append(f"• {n.replace(nl, '')} [<a href='{links[i]}'>link</a>]")
+				new_news_html.append(f"• {n.replace(nl, '')} [<a href='{link}'>link</a>]")
 			else:
 				new_news_html.append(f"• {n.replace(nl, '')}")
 	if len(new_news) == 0:
@@ -172,5 +172,5 @@ async def handle_news(client):
 		res_html += "<br>[<a href='https://kiwifarms.net/'>kiwifarms</a>]"
 	for room_id in config.auto_send_news_channels:
 		await send(room_id, res, client, True, res_html)
-	cache_news(news[0])
+	cache_news(news[0], news[1])
 		#await asyncio.sleep(config.seconds_between_check_news)
