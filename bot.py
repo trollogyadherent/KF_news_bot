@@ -26,6 +26,8 @@ async def main(client) -> None:
 	async def message_callback(room, event) -> None:
 		if room.room_id not in config.allowed_channel_ids_for_commands:
 			return
+		if event.body.startswith(config.prefix + 'help'):
+			await fn.send(room.room_id, 'List of available commands: news, source', client)
 		if event.body.startswith(config.prefix + 'news') and await fn.has_news_command_perms(event.sender, room, client):
 			news = fn.get_news()
 			if not news:
