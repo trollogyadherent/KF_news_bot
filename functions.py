@@ -89,7 +89,10 @@ def get_news(get_list=False):
 		html = r.text
 		soup = BeautifulSoup(html, features="html.parser")
 
-		pbody_pagecontent = soup.find_all("div", {"class": "p-body-pageContent"})[0]
+		pbody_pagecontent_ = soup.find_all("div", {"class": "p-body-pageContent"})
+		if len(pbody_pagecontent_) == 0:
+			return None
+		pbody_pagecontent = pbody_pagecontent_[0]
 		featured_block = pbody_pagecontent.find_all("div", {"class": "block-body"})[0]
 		featured_block_rows = featured_block.find_all("div", {"class": "block-row"})
 		n = []
@@ -119,8 +122,8 @@ def get_news(get_list=False):
 			if config.add_kf_homepage_link == 'true':
 				news[1] += "<br>[<a href='https://kiwifarms.net/'>kiwifarms</a>]"
 	except Exception as e:
-		#print(e)
-		raise e
+		print(e)
+		#raise e
 	return news
 
 
@@ -135,11 +138,12 @@ def read_news_cache():
 		return json.load(nc)
 
 async def handle_news(client):
-	print('sneed')
 	if config.auto_send_news == 'false' or len(config.auto_send_news_channels) == 0:
 		return
 	#while True:
 	news = get_news(True)
+	if not news:
+		return
 	news_cache = read_news_cache()
 
 	if not news_cache or not 'urls' in news_cache:

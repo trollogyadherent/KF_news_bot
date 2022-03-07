@@ -28,6 +28,8 @@ async def main(client) -> None:
 			return
 		if event.body.startswith(config.prefix + 'news') and await fn.has_news_command_perms(event.sender, room, client):
 			news = fn.get_news()
+			if not news:
+				await fn.send(room.room_id, 'Could not fetch featured articles. Are the farms down?', client)
 			print('got news')
 			if news and len(news) > 0 and len(news[0]) > 0:
 				print('not empty')
@@ -40,9 +42,12 @@ async def main(client) -> None:
 	await client.sync_forever(timeout=30000)
 
 async def periodic():
-    while True:
-        await fn.handle_news(client)
-        await asyncio.sleep(60)
+	while True:
+		try:
+			await fn.handle_news(client)
+		except Exception as e:
+			print(e)
+		await asyncio.sleep(60)
 loop.run_until_complete(asyncio.gather(periodic(), main(client)))
 
 #loop.create_task(fn.handle_news(client))
